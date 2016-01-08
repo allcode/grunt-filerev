@@ -12,7 +12,8 @@ module.exports = function (grunt) {
     var filerev = grunt.filerev || {summary: {}};
     var options = this.options({
       algorithm: 'md5',
-      length: 8
+      length: 8,
+      useQueryParam: false
     });
 
     eachAsync(this.files, function (el, i, next) {
@@ -50,14 +51,20 @@ module.exports = function (grunt) {
         var ext = path.extname(file);
         var newName;
 
-        if (typeof options.process === 'function') {
-          newName = options.process(path.basename(file, ext), suffix, ext.slice(1));
-        } else {
-          if (options.process) {
-            grunt.log.error('options.process must be a function; ignoring');
-          }
+        if (!options.useQueryParam) {
+          if (typeof options.process === 'function') {
+            newName = options.process(path.basename(file, ext), suffix, ext.slice(1));
+          } else {
+            if (options.process) {
+              grunt.log.error('options.process must be a function; ignoring');
+            }
 
-          newName = [path.basename(file, ext), suffix, ext.slice(1)].join('.');
+            newName = [path.basename(file, ext), suffix, ext.slice(1)].join('.');
+          }
+        } else {
+          // no renaming but the hash can be used to invalidate caches by
+          // appending it as a query parameter
+          newName = [path.basename(file, ext), ext.slice(1)].join('.');
         }
 
         var resultPath;
