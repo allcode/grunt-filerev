@@ -79,6 +79,17 @@ Type: `string`
 
 The file extension.
 
+#### options.useQueryParam
+
+Type: `boolean`  
+Default: `false`
+
+Whether or not to use a query parameter (`?rev=XXXXXXX`) instead of actually 
+renaming the files. This way, the files will retain their filename, but a query 
+parameter containing the file hash can be attached and used in later references. 
+The link to the file, including the query parameter can be found in the 
+`grunt.filerev.summary` object and, e.g., be used in subsequent tasks like usemin.
+
 ### Destination
 
 It will overwrite the `src` files if you don't specify a `dest`:
