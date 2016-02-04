@@ -109,6 +109,9 @@ module.exports = function (grunt) {
         }
 
         filerev.summary[path.normalize(file)] = path.join(dirname, newName);
+        if (options.useQueryParam) {
+          filerev.summary[path.normalize(file)] += '?rev=' + suffix;
+        }
         grunt.verbose.writeln(chalk.green('✔ ') + file + chalk.gray(' changed to ') + newName);
 
         if (sourceMap) {
